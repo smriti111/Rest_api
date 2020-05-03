@@ -31,15 +31,16 @@ class Item(Resource):
 
 
     def post(self, name):
+        #data=Item.parser.parse_args()
         if (ItemModel.find_by_name(name)):
             return {'message':"item '{}'is already present".format(name)},400
-        data=Item.parser.parse_args()
-        item=ItemModel(name,data['price'],data['store_id'])
+        data1=Item.parser.parse_args()
+        item1=ItemModel(name,**data1)
         try:
-            item.save_to_db()
+            item1.save_to_db()
         except:
             return{'message':'an error occured while insering the item'},500
-        return {'item':item.json() },201
+        return {'item':item1.json() },201
 
 
         
@@ -55,7 +56,7 @@ class Item(Resource):
         data=Item.parser.parse_args()
         item=ItemModel.find_by_name(name)
         if item is None:
-            item = ItemModel(name,data['price'],data['store_id'])   #**data
+            item = ItemModel(name,**data)   #**data
     
 
         else:
